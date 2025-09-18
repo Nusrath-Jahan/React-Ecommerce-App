@@ -1,11 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Typography, Card, CardContent, CardMedia } from "@mui/material";
+import {
+  Typography,
+  Card,
+  CardContent,
+  CardMedia,
+  Button,
+} from "@mui/material";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/cartSlice";
 
 function ProductDetails() {
   const { id } = useParams(); // id will be the value from the URL
   const [product, setProduct] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     axios
@@ -29,6 +38,14 @@ function ProductDetails() {
         <Typography variant="body1" sx={{ mt: 2 }}>
           {product.description}
         </Typography>
+
+        <Button
+          variant="contained"
+          sx={{ mt: 2 }}
+          onClick={() => dispatch(addToCart(product))}
+        >
+          Add to Cart
+        </Button>
       </CardContent>
     </Card>
   );
