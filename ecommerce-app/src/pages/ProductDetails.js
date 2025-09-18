@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Typography, Card, CardContent, CardMedia } from "@mui/material";
 
 function ProductDetails() {
-  const { id } = useParams();
+  const { id } = useParams(); // id will be the value from the URL
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    axios.get(`https://fakestoreapi.com/products/${id}`)
+    axios
+      .get(`https://fakestoreapi.com/products/${id}`)
       .then((res) => setProduct(res.data))
       .catch((err) => console.error(err));
   }, [id]);
-
-  if (!product) return <Typography>Loading...</Typography>;
+  if (!product) return <Typography>Loading...</Typography>; // Display a loading message while product data is being fetched
 
   return (
     <Card>
       <CardMedia
         component="img"
-        height="300"
         image={product.image}
         alt={product.title}
+        sx={{ maxWidth: 200, margin: "auto", mt: 2 }}
       />
-      <CardContent>
+      <CardContent sx={{ textAlign: "center", mb: 2, px: 2, py: 1 }}>
         <Typography variant="h4">{product.title}</Typography>
         <Typography variant="h6">${product.price}</Typography>
         <Typography variant="body1" sx={{ mt: 2 }}>
@@ -35,3 +35,6 @@ function ProductDetails() {
 }
 
 export default ProductDetails;
+
+//what is useParams?
+// useParams is a React Router hook that lets you access the parameters from the current URL. For example, if your route is defined as /products/:id, you can use useParams() to get the id value from the URL inside your component.

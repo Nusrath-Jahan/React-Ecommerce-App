@@ -39,7 +39,7 @@ It typically contains branding, navigation links, or action buttons. */}
 <Toolbar> helps with consistent spacing and layout of items in the top navigation bar.   */}
 
 // mt stands for margin-top
-  // sx is a prop in MUI that allows you to apply custom styles using a JavaScript object.
+//   sx is a prop in MUI that allows you to apply custom styles using a JavaScript object.
 
 // mr stands for margin-right
 // mb stands for margin-bottom
