@@ -37,7 +37,7 @@ function Signup() {
         onChange={(e) => setPassword(e.target.value)}
       />
       <Button variant="contained" onClick={handleLogin}>
-        Login
+        Signup
       </Button>
     </div>
   );

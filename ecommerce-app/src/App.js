@@ -4,12 +4,13 @@ import { AppBar, Toolbar, Button, Container, Typography } from "@mui/material";
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
 import Card from "./pages/Card";
-import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import SignUp from "./pages/Signup";
 import { useAuth } from "./context/AuthContext";
 
 function App() {
   const { user, logout } = useAuth();
+
   return (
     <div>
       {/* Navbar */}
@@ -24,9 +25,9 @@ function App() {
 
           {user ? (
             <>
-              <Typography sx={{ ml: 2 }}>{user.email}</Typography>
+              <Typography sx={{ mx: 2 }}>{user.email}</Typography>
               <Button color="inherit" onClick={logout}>
-                Logout
+                logout
               </Button>
             </>
           ) : (
@@ -49,7 +50,7 @@ function App() {
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/card" element={<Card />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
       </Container>
     </div>
@@ -57,30 +58,3 @@ function App() {
 }
 
 export default App;
-
-{
-  /* <AppBar> creates a top navigation bar for the application using Material-UI.
-It typically contains branding, navigation links, or action buttons. */
-}
-
-{
-  /* <Toolbar> provides a flexible container for grouping and aligning navigation elements, buttons, titles, or icons within the app bar. 
-<Toolbar> helps with consistent spacing and layout of items in the top navigation bar.   */
-}
-
-// mt stands for margin-top
-//   sx is a prop in MUI that allows you to apply custom styles using a JavaScript object.
-
-// mr stands for margin-right
-// mb stands for margin-bottom
-// ml stands for margin-left
-// mx stands for margin-left and margin-right
-// my stands for margin-top and margin-bottom
-
-// p stands for padding
-// pt stands for padding-top
-// pr stands for padding-right
-// pb stands for padding-bottom
-// pl stands for padding-left
-// px stands for padding-left and padding-right
-// py stands for padding-top and padding-bottom
