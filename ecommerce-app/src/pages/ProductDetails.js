@@ -53,5 +53,3 @@ function ProductDetails() {
 
 export default ProductDetails;
 
-//what is useParams?
-// useParams is a React Router hook that lets you access the parameters from the current URL. For example, if your route is defined as /products/:id, you can use useParams() to get the id value from the URL inside your component.

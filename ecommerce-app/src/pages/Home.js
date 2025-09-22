@@ -27,11 +27,12 @@ function Home() {
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
-    setAdded((prev) => ({ ...prev, [product.id]: true}));
-  setTimeout(() => {
-    setAdded((prev) => ({ ...prev, [product.id]: false}))
-  }, 1500); //Hide "Added!" message after 1.5 seconds
-  } 
+    setAdded((prev) => ({ ...prev, [product.id]: true }));
+    setTimeout(() => {
+      setAdded((prev) => ({ ...prev, [product.id]: false }));
+    }, 1500);
+    //Hide "Added!" message after 1.5 seconds
+  };
 
   return (
     <Grid container spacing={2}>
@@ -87,7 +88,7 @@ function Home() {
                 <Button
                   variant="contained"
                   color={added[product.id] ? "success" : "primary"}
-                  sx={{ mt: 1 , ml: 1 }}
+                  sx={{ mt: 1, ml: 1 }}
                   onClick={() => handleAddToCart(product)}
                   disabled={added[product.id]}
                 >
@@ -103,9 +104,3 @@ function Home() {
 }
 
 export default Home;
-
-// variant prop in Material-UI’s <Typography> component specifies the style of the text, such as its size and weight. It maps to different HTML tags and Material Design styles.
-// variant="h4" renders large, bold text for headings, while variant="body1" renders standard paragraph text. It helps maintain consistent typography across the app.
-// variant="body2" in Material-UI’s <Typography> component means the text will use the "body2" style, which is typically smaller and lighter than the default body text. It’s useful for secondary or less important information, like descriptions or prices. This helps keep your text visually organized and consistent across your app.
-// The sx prop in Material-UI allows you to apply custom styles directly to a component using a JavaScript object. It provides a convenient way to style components inline without needing separate CSS files.
-// what is the meaning of "product.id"?

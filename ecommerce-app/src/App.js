@@ -1,11 +1,15 @@
 import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
-import { AppBar, Toolbar, Button, Container } from "@mui/material";
+import { AppBar, Toolbar, Button, Container, Typography } from "@mui/material";
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
 import Card from "./pages/Card";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import { useAuth } from "./context/AuthContext";
 
 function App() {
+  const { user, logout } = useAuth();
   return (
     <div>
       {/* Navbar */}
@@ -17,6 +21,24 @@ function App() {
           <Button color="inherit" component={Link} to="/card">
             Card
           </Button>
+
+          {user ? (
+            <>
+              <Typography sx={{ ml: 2 }}>{user.email}</Typography>
+              <Button color="inherit" onClick={logout}>
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button color="inherit" component={Link} to="/login">
+                Login
+              </Button>
+              <Button color="inherit" component={Link} to="/signup">
+                Signup
+              </Button>
+            </>
+          )}
         </Toolbar>
       </AppBar>
 
@@ -26,6 +48,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/card" element={<Card />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </Container>
     </div>
