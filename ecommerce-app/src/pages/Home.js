@@ -10,6 +10,7 @@ import {
   Box,
   TextField,
   MenuItem,
+  CircularProgress,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -19,21 +20,34 @@ function Home() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
   const [added, setAdded] = useState({});
+
+  const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    axios
-      .get("https://fakestoreapi.com/products")
-      .then((res) => setProducts(res.data))
-      .catch((err) => console.error(err));
+    async function fetchData() {
+      try {
+        const productRes = await axios.get("https://fakestoreapi.com/products");
+        console.log("Products:", productRes.data);
+        setProducts(productRes.data);
 
-    axios
-      .get("https://fakestoreapi.com/products/categories")
-      .then((res) => setCategories(res.data))
-      .catch((err) => console.error(err));
+        const categoryRes = await axios.get(
+          "https://fakestoreapi.com/products/categories"
+        );
+        console.log("Categories: ", categoryRes.data);
+        setCategories(categoryRes.data);
+
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        setLoading(false);
+      }
+    }
+    fetchData();
   }, []);
 
   const handleAddToCart = (product) => {
@@ -50,10 +64,21 @@ function Home() {
       selectedCategory === "all" || product.category === selectedCategory;
     const matchesSearch = product.title
       .toLowerCase()
-      .includes(search.toLocaleLowerCase());
+      .includes(search.toLowerCase());
 
     return matchesCategory && matchesSearch;
   });
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "50px" }}>
+        <CircularProgress />
+        <Typography variant="h6" sx={{ mt: 2 }}>
+          Loading products...
+        </Typography>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -77,8 +102,10 @@ function Home() {
           select
           label="Category"
           value={selectedCategory}
+          defaultValue="all"
           onChange={(e) => setSelectedCategory(e.target.value)}
           sx={{ width: 200 }}
+          
         >
           <MenuItem value="all">All</MenuItem>
           {categories.map((cat) => (
@@ -92,12 +119,12 @@ function Home() {
       {/* Product Grid */}
       <Grid container spacing={2}>
         {filteredProducts.map((product) => (
-          <Grid item xs={12} sm={6} key={product.id}>
+          <Grid item xs={12} sm={6} md={4} key={product.id}>
             <Card>
               <CardMedia
-                component={"img"}
+                component="img"
                 image={product.image}
-                alt="{product.title}"
+                alt={product.title}
                 sx={{
                   width: 200,
                   height: 200,
@@ -115,12 +142,10 @@ function Home() {
                     margin: "auto",
                   }}
                 >
-                  {" "}
-                  {product.title}{" "}
+                  {product.title}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {" "}
-                  ${product.price}{" "}
+                  ${product.price}
                 </Typography>
                 <Box
                   sx={{
@@ -137,7 +162,6 @@ function Home() {
                     variant="contained"
                     sx={{ mt: 1 }}
                   >
-                    {" "}
                     View Details
                   </Button>
                   <Button
@@ -155,7 +179,7 @@ function Home() {
           </Grid>
         ))}
       </Grid>
-      {filteredProducts.length === 0 && (
+      {filteredProducts.length === 0 && !loading && (
         <Typography variant="h6" sx={{ mt: 2 }}>
           No products found.
         </Typography>
@@ -164,5 +188,6 @@ function Home() {
   );
 }
 
-
 export default Home;
+//what si the meaning of <MenuItem value="all">All</MenuItem>?
+//It creates a dropdown option labeled "All" with a value of "all" for filtering products by category.
