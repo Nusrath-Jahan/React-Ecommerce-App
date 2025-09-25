@@ -7,6 +7,7 @@ import Card from "./pages/Card";
 import Login from "./pages/Login";
 import SignUp from "./pages/Signup";
 import { useAuth } from "./context/AuthContext";
+import StripeContainer from "./StripeContainer";
 
 function App() {
   const { user, logout } = useAuth();
@@ -51,6 +52,7 @@ function App() {
           <Route path="/card" element={<Card />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/checkout" element={<StripeContainer />} />
         </Routes>
       </Container>
     </div>

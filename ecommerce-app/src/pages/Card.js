@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Typography, Button, Card, CardContent } from "@mui/material";
 import { removeFromCart, increaseQty, decreaseQty } from "../redux/cartSlice";
-
+import { Link } from "react-router-dom";
 function Cart() {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
@@ -34,8 +34,17 @@ function Cart() {
         </Card>
       ))}
       <Typography>Total: ${total.toFixed(2)}</Typography>
+      <Button
+        variant="contained"
+        sx={{ mt: 2 }}
+        component={Link}
+        to="/checkout"
+      >
+        Checkout
+      </Button>
     </div>
   );
 }
 
 export default Cart;
+
