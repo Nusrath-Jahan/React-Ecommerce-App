@@ -23,7 +23,7 @@ function ProductDetails() {
       .catch((err) => console.error(err));
   }, [id]);
   if (!product) return <Typography>Loading...</Typography>; // Display a loading message while product data is being fetched
-
+ 
   return (
     <Card>
       <CardMedia
@@ -32,6 +32,7 @@ function ProductDetails() {
         alt={product.title}
         sx={{ maxWidth: 200, margin: "auto", mt: 2 }}
       />
+      
       <CardContent sx={{ textAlign: "center", mb: 2, px: 2, py: 1 }}>
         <Typography variant="h4">{product.title}</Typography>
         <Typography variant="h6">${product.price}</Typography>

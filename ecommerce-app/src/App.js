@@ -1,13 +1,6 @@
 import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
-import {
-  AppBar,
-  Toolbar,
-  Button,
-  Container,
-  Typography,
-  Box,
-} from "@mui/material";
+import { Routes, Route } from "react-router-dom";
+import { Container } from "@mui/material";
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
 import Card from "./pages/Card";
@@ -16,14 +9,17 @@ import SignUp from "./pages/Signup";
 import StripeContainer from "./StripeContainer";
 import PromoBanner from "./components/PromoBanner";
 import Navbar from "./components/Navbar";
+import ShopPage from "./pages/ShopPage";
+import "./App.css";
 function App() {
   return (
     <>
       <PromoBanner />
       <Navbar />
+
       <div>
         {/* Pages */}
-        <Container sx={{ mt: 3 }}>
+        <Container sx={{ mt: 3 }} maxWidth={false}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/product/:id" element={<ProductDetails />} />
@@ -31,6 +27,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/checkout" element={<StripeContainer />} />
+            <Route path="/shop" element={<ShopPage />} key="shop" />
           </Routes>
         </Container>
       </div>
