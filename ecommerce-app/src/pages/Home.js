@@ -21,11 +21,8 @@ function Home() {
   const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-
   const [added, setAdded] = useState({});
-
   const [loading, setLoading] = useState(true);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -105,7 +102,6 @@ function Home() {
           defaultValue="all"
           onChange={(e) => setSelectedCategory(e.target.value)}
           sx={{ width: 200 }}
-          
         >
           <MenuItem value="all">All</MenuItem>
           {categories.map((cat) => (
@@ -120,61 +116,104 @@ function Home() {
       <Grid container spacing={2}>
         {filteredProducts.map((product) => (
           <Grid item xs={12} sm={6} md={4} key={product.id}>
-            <Card>
-              <CardMedia
-                component="img"
-                image={product.image}
-                alt={product.title}
+            <Card
+              sx={{
+                maxWidth: 220,
+                margin: "auto",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                boxShadow: 2,
+                borderRadius: 2,
+                transition: "transform 0.3s, box-shadow 0.3s",
+                "&:hover": {
+                  transform: "translateY(-5px) scale(1.02)",
+                  boxShadow: 6,
+                },
+              }}
+            >
+              {/* Product Image */}
+              <Box
                 sx={{
-                  width: 200,
-                  height: 200,
-                  objectFit: "contain",
-                  margin: "auto",
+                  height: 280,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "#fafafa",
+                  padding: 1,
+                  overflow: "hidden",
                 }}
-              />
-              <CardContent>
-                <Typography
-                  variant="h6"
+              >
+                <CardMedia
+                  component="img"
+                  image={product.image}
+                  alt={product.title}
                   sx={{
-                    width: 200,
-                    height: 200,
+                    maxHeight: "100%",
+                    maxWidth: "100%",
                     objectFit: "contain",
-                    margin: "auto",
+                    transition: "transform 0.3s",
+                    "&:hover": {
+                      transform: "scale(1.01)",
+                    },
+                  }}
+                />
+              </Box>
+              {/* Title + Price */}
+              <CardContent sx={{ p: 1 }}>
+                {/* Title */}
+                <Typography
+                  variant="subtitle2"
+                  sx={{
+                    fontSize: "0.85rem",
+                    fontWeight: 500,
+                    lineHeight: "1.2em",
+                    height: 32,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    mb: 0.5,
                   }}
                 >
                   {product.title}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+
+                {/* Price */}
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mb: 0.5, fontWeight: "bold" }}
+                >
                   ${product.price}
                 </Typography>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center, mt: 2",
-                    objectFit: "contain",
-                    margin: "auto",
-                  }}
-                >
-                  <Button
-                    component={Link}
-                    to={`/product/${product.id}`}
-                    variant="contained"
-                    sx={{ mt: 1 }}
-                  >
-                    View Details
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color={added[product.id] ? "success" : "primary"}
-                    sx={{ mt: 1, ml: 1 }}
-                    onClick={() => handleAddToCart(product)}
-                    disabled={added[product.id]}
-                  >
-                    {added[product.id] ? "Added!" : "Add to Cart"}
-                  </Button>
-                </Box>
               </CardContent>
+
+              {/* Action Buttons */}
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: 1,
+                  pt: 0,
+                }}
+              >
+                <Button
+                  component={Link}
+                  to={`/product/${product.id}`}
+                  variant="outlined"
+                  size="small"
+                >
+                  View
+                </Button>
+                <Button
+                  variant="contained"
+                  color={added[product.id] ? "success" : "primary"}
+                  sx={{ mt: 1, ml: 1 }}
+                  onClick={() => handleAddToCart(product)}
+                  disabled={added[product.id]}
+                >
+                  {added[product.id] ? "Added!" : "Add"}
+                </Button>
+              </Box>
             </Card>
           </Grid>
         ))}
@@ -189,5 +228,3 @@ function Home() {
 }
 
 export default Home;
-//what si the meaning of <MenuItem value="all">All</MenuItem>?
-//It creates a dropdown option labeled "All" with a value of "all" for filtering products by category.
