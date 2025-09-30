@@ -14,7 +14,7 @@ function Navbar() {
   const { user, logout } = useAuth();
   
   return (
-    <AppBar position="static" color="default" sx={{ width: "100%" }}>
+    <AppBar position="static" color="default" sx={{ width: "100%" , top: "53px"}}>
       <Toolbar disableGutters>
         <Button
           component={Link}

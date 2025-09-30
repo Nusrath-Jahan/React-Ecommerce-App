@@ -79,25 +79,29 @@ function Home() {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 2 }}>
-      {/* Outer flex: column on xs, row on md+ */}
-      <Box
-        sx={{
-          display: "flex",
-          gap: 3,
-          alignItems: "flex-start",
-          flexDirection: { xs: "column", md: "row" },
-        }}
-      >
-        {/* LEFT: Sidebar area */}
+    <Container
+      maxWidth="false"
+      disableGutters
+      sx={{ mt: 2, overflow: "visible" }}
+    >
+      <Box sx={{ mt: 2, px: 2 }}>
         <Box
           sx={{
-            width: { xs: "100%", md: 260 }, // fixed width on desktop, full width on mobile
-            flexShrink: 0,
+            display: "flex",
+            gap: 3,
+            alignItems: "flex-start",
+            flexDirection: { xs: "column", md: "row" },
           }}
         >
+          {/* LEFT: Sidebar area */}
           <Box
-            sx={{ position: "sticky", top: "80px", alignSelf: "flex-start" }}
+            sx={{
+              width: { xs: "100%", md: 260 },
+              flexShrink: 0,
+              position: "sticky",
+              top: "35px",
+              alignSelf: "flex-start",
+            }}
           >
             <CategorySidebar
               categories={categories}
@@ -105,127 +109,128 @@ function Home() {
               onSelectCategory={setSelectedCategory}
             />
           </Box>
-           </Box>
-     {/* RIGHT: Main content (search + products) */}
-        <Box sx={{ flex: 1 }}>
-          {/* Search */}
-          <Box sx={{ mb: 2 }}>
-            <TextField
-              label="Search Products"
-              variant="outlined"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              fullWidth
-            />
-          </Box>
 
-          {/* Product Grid */}
-          <Grid container spacing={2}>
-            {filteredProducts.length > 0 ? (
-              filteredProducts.map((product) => (
-                <Grid item xs={12} sm={6} md={4} key={product.id}>
-                  <Card
-                    sx={{
-                      maxWidth: 240,
-                      margin: "auto",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      boxShadow: 2,
-                      borderRadius: 2,
-                      transition: "transform 0.25s, box-shadow 0.25s",
-                      "&:hover": {
-                        transform: "translateY(-5px) scale(1.02)",
-                        boxShadow: 6,
-                      },
-                    }}
-                  >
-                    <Box
+          {/* RIGHT: Main content (search + products) */}
+          <Box sx={{ flex: 1 }}>
+            {/* Search */}
+            <Box sx={{ mb: 2 }}>
+              <TextField
+                label="Search Products"
+                variant="outlined"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                fullWidth
+              />
+            </Box>
+
+            {/* Product Grid */}
+            <Grid container spacing={2}>
+              {filteredProducts.length > 0 ? (
+                filteredProducts.map((product) => (
+                  <Grid item xs={12} sm={6} md={4} key={product.id}>
+                    <Card
                       sx={{
-                        height: 200,
+                        maxWidth: 240,
+                        margin: "auto",
                         display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        backgroundColor: "#fafafa",
-                        padding: 1,
-                        overflow: "hidden",
-                      }}
-                    >
-                      <CardMedia
-                        component="img"
-                        image={product.image}
-                        alt={product.title}
-                        sx={{
-                          maxHeight: "100%",
-                          maxWidth: "100%",
-                          objectFit: "contain",
-                          transition: "transform 0.3s",
-                          "&:hover": {
-                            transform: "scale(1.01)",
-                          },
-                        }}
-                      />
-                    </Box>
-                    <CardContent sx={{ p: 1 }}>
-                      <Typography
-                        variant="subtitle2"
-                        sx={{
-                          fontSize: "0.85rem",
-                          fontWeight: 500,
-                          lineHeight: "1.2em",
-                          height: 32,
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          mb: 0.5,
-                        }}
-                      >
-                        {product.title}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        sx={{ mb: 0.5, fontWeight: "bold" }}
-                      >
-                        ${product.price}
-                      </Typography>
-                    </CardContent>
-                    <Box
-                      sx={{
-                        display: "flex",
+                        flexDirection: "column",
                         justifyContent: "space-between",
-                        padding: 1,
-                        pt: 0,
+                        boxShadow: 2,
+                        borderRadius: 2,
+                        transition: "transform 0.25s, box-shadow 0.25s",
+                        "&:hover": {
+                          transform: "translateY(-5px) scale(1.02)",
+                          boxShadow: 6,
+                        },
                       }}
                     >
-                      <Button
-                        component={Link}
-                        to={`/product/${product.id}`}
-                        variant="outlined"
-                        size="small"
+                      <Box
+                        sx={{
+                          height: 200,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          backgroundColor: "#fafafa",
+                          padding: 1,
+                          overflow: "hidden",
+                        }}
                       >
-                        View
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color={added[product.id] ? "success" : "primary"}
-                        sx={{ mt: 1, ml: 1 }}
-                        onClick={() => handleAddToCart(product)}
-                        disabled={added[product.id]}
+                        <CardMedia
+                          component="img"
+                          image={product.image}
+                          alt={product.title}
+                          sx={{
+                            maxHeight: "100%",
+                            maxWidth: "100%",
+                            objectFit: "contain",
+                            transition: "transform 0.3s",
+                            "&:hover": {
+                              transform: "scale(1.01)",
+                            },
+                          }}
+                        />
+                      </Box>
+                      <CardContent sx={{ p: 1 }}>
+                        <Typography
+                          variant="subtitle2"
+                          sx={{
+                            fontSize: "0.85rem",
+                            fontWeight: 500,
+                            lineHeight: "1.2em",
+                            height: 32,
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            mb: 0.5,
+                          }}
+                        >
+                          {product.title}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          sx={{ mb: 0.5, fontWeight: "bold" }}
+                        >
+                          ${product.price}
+                        </Typography>
+                      </CardContent>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          padding: 1,
+                          pt: 0,
+                        }}
                       >
-                        {added[product.id] ? "Added!" : "Add"}
-                      </Button>
-                    </Box>
-                  </Card>
+                        <Button
+                          component={Link}
+                          to={`/product/${product.id}`}
+                          variant="outlined"
+                          size="small"
+                        >
+                          View
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color={added[product.id] ? "success" : "primary"}
+                          sx={{ mt: 1, ml: 1 }}
+                          onClick={() => handleAddToCart(product)}
+                          disabled={added[product.id]}
+                        >
+                          {added[product.id] ? "Added!" : "Add"}
+                        </Button>
+                      </Box>
+                    </Card>
+                  </Grid>
+                ))
+              ) : (
+                <Grid item xs={12}>
+                  <Typography variant="h6" sx={{ mt: 2, textAlign: "center" }}>
+                    No products found.
+                  </Typography>
                 </Grid>
-              ))
-            ) : (
-              <Grid item xs={12}>
-                <Typography variant="h6" sx={{ mt: 2, textAlign: "center" }}>
-                  No products found.
-                </Typography>
-              </Grid>
-            )}
-          </Grid>
+              )}
+            </Grid>
+          </Box>
         </Box>
       </Box>
     </Container>
