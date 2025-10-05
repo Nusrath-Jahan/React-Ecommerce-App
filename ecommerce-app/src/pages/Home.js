@@ -84,7 +84,32 @@ function Home() {
       disableGutters
       sx={{ mt: 2, overflow: "visible" }}
     >
-      <Box sx={{ mt: 2, px: 2 }}>
+      <Box sx={{ mt: 2, px: { xs: 1, md: 2 } }}>
+        {/* Mobile top bar: hamburger + search */}
+        <Box
+          sx={{
+            display: { xs: "flex", md: "none" },
+            alignItems: "center",
+            gap: 1,
+            mb: 2,
+          }}
+        >
+          <CategorySidebar
+            categories={categories}
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+          />
+          <TextField
+            label="Search Products"
+            variant="outlined"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            fullWidth
+            size="small"
+          />
+        </Box>
+
+        {/* Desktop View */}
         <Box
           sx={{
             display: "flex",
@@ -98,9 +123,11 @@ function Home() {
             sx={{
               width: { xs: "100%", md: 260 },
               flexShrink: 0,
-              position: "sticky",
-              top: "35px",
+              position: { xs: "static", md: "sticky" },
+              top: { xs: "auto", md: "35px" },
               alignSelf: "flex-start",
+              mb: { xs: 2, md: 0 },
+              display: { xs: "none", md: "block" },
             }}
           >
             <CategorySidebar
@@ -113,7 +140,7 @@ function Home() {
           {/* RIGHT: Main content (search + products) */}
           <Box sx={{ flex: 1 }}>
             {/* Search */}
-            <Box sx={{ mb: 2 }}>
+            <Box sx={{ mb: 2, display: { xs: "none", md: "block" } }}>
               <TextField
                 label="Search Products"
                 variant="outlined"
@@ -130,7 +157,7 @@ function Home() {
                   <Grid item xs={12} sm={6} md={4} key={product.id}>
                     <Card
                       sx={{
-                        maxWidth: 240,
+                        width: { xs: "100%", sm: "100%", md: 220 },
                         margin: "auto",
                         display: "flex",
                         flexDirection: "column",
@@ -142,11 +169,14 @@ function Home() {
                           transform: "translateY(-5px) scale(1.02)",
                           boxShadow: 6,
                         },
+                        minHeight: 380,
                       }}
                     >
+                      {/* Image container */}
                       <Box
                         sx={{
-                          height: 200,
+                          height: 180,
+                          width: 200,
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -170,7 +200,8 @@ function Home() {
                           }}
                         />
                       </Box>
-                      <CardContent sx={{ p: 1 }}>
+                      {/* Card content */}
+                      <CardContent sx={{ p: 1, flexGrow: 1 }}>
                         <Typography
                           variant="subtitle2"
                           sx={{
