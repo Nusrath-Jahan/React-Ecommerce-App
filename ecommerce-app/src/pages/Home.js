@@ -16,7 +16,8 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
 import CategorySidebar from "../components/CategorySidebar";
-
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 function Home() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -157,7 +158,7 @@ function Home() {
                   <Grid item xs={12} sm={6} md={4} key={product.id}>
                     <Card
                       sx={{
-                        width: { xs: "100%", sm: "100%", md: 220 },
+                        width: { xs: 250, sm: "100%", md: 220 },
                         margin: "auto",
                         display: "flex",
                         flexDirection: "column",
@@ -169,7 +170,7 @@ function Home() {
                           transform: "translateY(-5px) scale(1.02)",
                           boxShadow: 6,
                         },
-                        minHeight: 380,
+                        minHeight: { md: 300, xs: 300 },
                       }}
                     >
                       {/* Image container */}
@@ -236,7 +237,7 @@ function Home() {
                           component={Link}
                           to={`/product/${product.id}`}
                           variant="outlined"
-                          size="small"
+                          sx={{ mt: 1, ml: 1 }}
                         >
                           View
                         </Button>
@@ -247,7 +248,15 @@ function Home() {
                           onClick={() => handleAddToCart(product)}
                           disabled={added[product.id]}
                         >
-                          {added[product.id] ? "Added!" : "Add"}
+                          {added[product.id] ? (
+                            <>
+                              <CheckCircleIcon /> Added
+                            </>
+                          ) : (
+                            <>
+                              <ShoppingCartIcon /> Add
+                            </>
+                          )}
                         </Button>
                       </Box>
                     </Card>

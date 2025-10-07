@@ -32,7 +32,7 @@ function Cart() {
         width: "100%",
         backgroundColor: "#fafafa",
         minHeight: "100vh",
-        p: { xs: 2, md: 4 },
+        p: { xs: 0, md: 4 },
       }}
     >
       <Typography variant="h4" gutterBottom fontWeight={600}>
@@ -203,30 +203,30 @@ function Cart() {
           position: { xs: "fixed", md: "static" },
           bottom: 0,
           left: 0,
-          width: "100%",
+          right: 0,
           backgroundColor: "#fff",
           boxShadow: { xs: "0 -2px 8px rgba(0,0,0,0.08)", md: "none" },
           p: { xs: 2, md: 0 },
           display: { xs: "flex", md: "none" },
           justifyContent: "space-between",
           alignItems: "center",
+          boxSizing: "border-box",
           zIndex: 10,
         }}
       >
         <Typography fontWeight={600}>Total: ${total.toFixed(2)}</Typography>
         <Button
           variant="contained"
-          
+          component={Link}
+          to="/checkout"
           sx={{
             backgroundColor: "#f97316",
             "&:hover": { backgroundColor: "#ea580c" },
             borderRadius: 2,
-            
             px: 4,
             py: 1.3,
+            mr: 3,
           }}
-          component={Link}
-          to="/checkout"
         >
           Checkout
         </Button>
