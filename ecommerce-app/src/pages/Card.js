@@ -32,17 +32,17 @@ function Cart() {
         width: "100%",
         backgroundColor: "#fafafa",
         minHeight: "100vh",
-        p: 4,
+        p: { xs: 2, md: 4 },
       }}
     >
       <Typography variant="h4" gutterBottom fontWeight={600}>
         Shopping Cart
       </Typography>
 
-      {/* ✅ Use Flexbox for sticky layout instead of Grid */}
+      {/* ✅ Desktop layout (Flexbox) */}
       <Box
         sx={{
-          display: "flex",
+          display: { xs: "block", md: "flex" },
           alignItems: "flex-start",
           gap: 3,
           width: "100%",
@@ -60,6 +60,7 @@ function Cart() {
                 boxShadow: "0 2px 10px rgba(0, 0, 0, 0.05)",
                 display: "flex",
                 alignItems: "center",
+                flexDirection: { xs: "column", sm: "row" },
               }}
             >
               {/* Product Image */}
@@ -68,17 +69,18 @@ function Cart() {
                 image={item.image}
                 alt={item.title}
                 sx={{
-                  width: 120,
-                  height: 120,
+                  width: { xs: "100%", sm: 120 },
+                  height: { xs: 180, sm: 120 },
                   objectFit: "contain",
                   borderRadius: 2,
                   backgroundColor: "#f9f9f9",
-                  mr: 2,
+                  mb: { xs: 2, sm: 0 },
+                  mr: { sm: 2 },
                 }}
               />
 
               {/* Product Info */}
-              <Box sx={{ flex: 1 }}>
+              <Box sx={{ flex: 1, width: "100%" }}>
                 <Typography variant="subtitle1" fontWeight={600}>
                   {item.title}
                 </Typography>
@@ -97,6 +99,8 @@ function Cart() {
                     alignItems: "center",
                     justifyContent: "space-between",
                     mt: 2,
+                    flexWrap: "wrap",
+                    gap: 1,
                   }}
                 >
                   {/* Quantity controls */}
@@ -145,13 +149,14 @@ function Cart() {
           ))}
         </Box>
 
-        {/* RIGHT SIDE: Sticky Checkout Summary */}
+        {/* RIGHT SIDE: Sticky Checkout Summary (Desktop Only) */}
         <Box
           sx={{
             flex: 1,
-            position: "sticky",
-            top: 20,
+            position: { md: "sticky" },
+            top: { md: 20 },
             alignSelf: "flex-start",
+            display: { xs: "none", md: "block" },
           }}
         >
           <Card
@@ -190,6 +195,41 @@ function Cart() {
             </Button>
           </Card>
         </Box>
+      </Box>
+
+      {/* ✅ MOBILE: Sticky Bottom Checkout Bar */}
+      <Box
+        sx={{
+          position: { xs: "fixed", md: "static" },
+          bottom: 0,
+          left: 0,
+          width: "100%",
+          backgroundColor: "#fff",
+          boxShadow: { xs: "0 -2px 8px rgba(0,0,0,0.08)", md: "none" },
+          p: { xs: 2, md: 0 },
+          display: { xs: "flex", md: "none" },
+          justifyContent: "space-between",
+          alignItems: "center",
+          zIndex: 10,
+        }}
+      >
+        <Typography fontWeight={600}>Total: ${total.toFixed(2)}</Typography>
+        <Button
+          variant="contained"
+          
+          sx={{
+            backgroundColor: "#f97316",
+            "&:hover": { backgroundColor: "#ea580c" },
+            borderRadius: 2,
+            
+            px: 4,
+            py: 1.3,
+          }}
+          component={Link}
+          to="/checkout"
+        >
+          Checkout
+        </Button>
       </Box>
     </Box>
   );
