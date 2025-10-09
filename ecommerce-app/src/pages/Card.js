@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   CardMedia,
-  Grid,
   Divider,
   Box,
 } from "@mui/material";
