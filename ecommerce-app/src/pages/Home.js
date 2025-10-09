@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Chip } from "@mui/material";
 import {
   Grid,
   Card,
@@ -87,7 +88,7 @@ function Home() {
     >
       <Box sx={{ mt: 2, px: { xs: 1, md: 2 } }}>
         {/* Mobile top bar: hamburger + search */}
-        <Box
+        {/* <Box
           sx={{
             display: { xs: "flex", md: "none" },
             alignItems: "center",
@@ -100,14 +101,45 @@ function Home() {
             selectedCategory={selectedCategory}
             onSelectCategory={setSelectedCategory}
           />
-          <TextField
-            label="Search Products"
-            variant="outlined"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            fullWidth
-            size="small"
+          </Box> */}
+        <TextField
+          label="Search Products"
+          variant="outlined"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          fullWidth
+          size="small"
+          sx={{
+            display: { xs: "flex", md: "none" },
+          }}
+        />
+
+        <Box
+          sx={{
+            display: { xs: "flex", md: "none" },
+            overflowX: "auto",
+            gap: 1,
+            py: 1,
+            px: 0.5,
+            scrollbarWidth: "none",
+            "&::-webkit-scrollbar": { display: "none" },
+          }}
+        >
+          <Chip
+            label="All"
+            clickable
+            color={selectedCategory === "all" ? "primary" : "default"}
+            onClick={() => setSelectedCategory("all")}
           />
+          {categories.map((cat) => (
+            <Chip
+              key={cat}
+              label={cat.charAt(0).toUpperCase() + cat.slice(1)}
+              clickable
+              color={selectedCategory === cat ? "primary" : "default"}
+              onClick={() => setSelectedCategory(cat)}
+            />
+          ))}
         </Box>
 
         {/* Desktop View */}
@@ -158,7 +190,7 @@ function Home() {
                   <Grid item xs={12} sm={6} md={4} key={product.id}>
                     <Card
                       sx={{
-                        width: { xs: 250, sm: "100%", md: 220 },
+                        width: { md: 220, sm: "100%", xs: 380 },
                         margin: "auto",
                         display: "flex",
                         flexDirection: "column",
@@ -176,7 +208,7 @@ function Home() {
                       {/* Image container */}
                       <Box
                         sx={{
-                          height: 180,
+                          height: 220,
                           width: 200,
                           display: "flex",
                           alignItems: "center",
@@ -184,6 +216,7 @@ function Home() {
                           backgroundColor: "#fafafa",
                           padding: 1,
                           overflow: "hidden",
+                          margin: "0 auto",
                         }}
                       >
                         <CardMedia
@@ -195,6 +228,7 @@ function Home() {
                             maxWidth: "100%",
                             objectFit: "contain",
                             transition: "transform 0.3s",
+                            margin: "0 auto",
                             "&:hover": {
                               transform: "scale(1.01)",
                             },
