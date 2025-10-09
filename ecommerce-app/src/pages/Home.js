@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Chip } from "@mui/material";
+import { Fab, Badge } from "@mui/material";
+import { useSelector } from "react-redux";
 import {
   Grid,
   Card,
@@ -27,6 +29,7 @@ function Home() {
   const [added, setAdded] = useState({});
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart);
 
   useEffect(() => {
     async function fetchData() {
@@ -292,6 +295,34 @@ function Home() {
             </Grid>
           </Box>
         </Box>
+      </Box>
+      {/* Floating Cart Button - only on mobile */}
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: 20,
+          right: 20,
+          zIndex: 1200,
+          display: { xs: "flex", md: "none" },
+        }}
+      >
+        <Badge
+          badgeContent={cartItems?.length || 0}
+          color="error"
+          overlap="circular"
+        >
+          <Fab
+            color="primary"
+            component={Link}
+            to="/card"
+            sx={{
+              boxShadow: 4,
+              "&:hover": { boxShadow: 8 },
+            }}
+          >
+            <ShoppingCartIcon />
+          </Fab>
+        </Badge>
       </Box>
     </Container>
   );
