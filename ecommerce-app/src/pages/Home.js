@@ -87,21 +87,7 @@ function Home() {
       sx={{ mt: 2, overflow: "visible" }}
     >
       <Box sx={{ mt: 2, px: { xs: 1, md: 2 } }}>
-        {/* Mobile top bar: hamburger + search */}
-        {/* <Box
-          sx={{
-            display: { xs: "flex", md: "none" },
-            alignItems: "center",
-            gap: 1,
-            mb: 2,
-          }}
-        >
-          <CategorySidebar
-            categories={categories}
-            selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
-          />
-          </Box> */}
+        {/* Mobile View */}
         <TextField
           label="Search Products"
           variant="outlined"
