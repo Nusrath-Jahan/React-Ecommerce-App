@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import { Container } from "@mui/material";
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
-import Card from "./pages/Card";
 import Login from "./pages/Login";
 import SignUp from "./pages/Signup";
 import StripeContainer from "./StripeContainer";
@@ -11,6 +10,7 @@ import PromoBanner from "./components/PromoBanner";
 import Navbar from "./components/Navbar";
 import ShopPage from "./pages/ShopPage";
 import "./App.css";
+import Cart from "./pages/Cart";
 function App() {
   return (
     <>
@@ -23,7 +23,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/product/:id" element={<ProductDetails />} />
-            <Route path="/card" element={<Card />} />
+            <Route path="/cart" element={<Cart />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/checkout" element={<StripeContainer />} />
