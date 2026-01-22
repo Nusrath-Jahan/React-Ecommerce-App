@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
-import { Chip } from "@mui/material";
-import { Fab, Badge } from "@mui/material";
-import { useSelector } from "react-redux";
 import {
   Grid,
   Card,
@@ -14,41 +11,39 @@ import {
   TextField,
   CircularProgress,
   Container,
+  Chip,
+  Badge,
+  Fab,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
-import CategorySidebar from "../components/CategorySidebar";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-function Home() {
+import SliderBanner from "../components/SliderBanner";
+import { useSearch } from "../context/SearchContext";
+
+
+export default function Home() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [added, setAdded] = useState({});
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart);
+  const { search } = useSearch();
+
 
   useEffect(() => {
     async function fetchData() {
-      try {
-        const productRes = await axios.get("https://fakestoreapi.com/products");
-        console.log("Products:", productRes.data);
-        setProducts(productRes.data);
-
-        const categoryRes = await axios.get(
-          "https://fakestoreapi.com/products/categories"
-        );
-        console.log("Categories: ", categoryRes.data);
-        setCategories(categoryRes.data);
-
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-        setLoading(false);
-      }
+      const productRes = await axios.get("https://fakestoreapi.com/products");
+      const categoryRes = await axios.get(
+        "https://fakestoreapi.com/products/categories",
+      );
+      setProducts(productRes.data);
+      setCategories(categoryRes.data);
+      setLoading(false);
     }
     fetchData();
   }, []);
@@ -58,58 +53,70 @@ function Home() {
     setAdded((prev) => ({ ...prev, [product.id]: true }));
     setTimeout(() => {
       setAdded((prev) => ({ ...prev, [product.id]: false }));
-    }, 1500);
-    //Hide "Added!" message after 1.5 seconds
+    }, 1200);
   };
 
-  const filteredProducts = products.filter((product) => {
-    const matchesCategory =
-      selectedCategory === "all" || product.category === selectedCategory;
-    const matchesSearch = product.title
-      .toLowerCase()
-      .includes(search.toLowerCase());
-
-    return matchesCategory && matchesSearch;
-  });
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      const matchesCategory =
+        selectedCategory === "all" || product.category === selectedCategory;
+      const matchesSearch = product.title
+        .toLowerCase()
+        .includes(search.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }, [products, selectedCategory, search]);
 
   if (loading) {
     return (
-      <div style={{ textAlign: "center", marginTop: 50 }}>
+      <Box textAlign="center" mt={8}>
         <CircularProgress />
-        <Typography variant="h6" sx={{ mt: 2 }}>
-          Loading products...
-        </Typography>
-      </div>
+        <Typography sx={{ mt: 2 }}>Loading products...</Typography>
+      </Box>
     );
   }
 
   return (
-    <Container
-      maxWidth="false"
-      disableGutters
-      sx={{ mt: 2, overflow: "visible" }}
-    >
-      <Box sx={{ mt: 2, px: { xs: 1, md: 2 } }}>
-        {/* Mobile View */}
-        <TextField
-          label="Search Products"
-          variant="outlined"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          fullWidth
-          size="small"
-          sx={{
-            display: { xs: "flex", md: "none" },
-          }}
-        />
+    <>
+      {/* Navbar already comes from App layout */}
 
+      {/* 🔹 SLIDER ONLY ON HOME PAGE */}
+      <SliderBanner />
+
+      {/* 🔹 Rest of your Home page content */}
+      <Container maxWidth="xl" sx={{ py: 2 }}>
+        {/* 🔹 TOP BANNER  */}
         <Box
           sx={{
-            display: { xs: "flex", md: "none" },
+            height: { xs: 140, md: 220 },
+            borderRadius: 3,
+            mb: 3,
+            background: "linear-gradient(to right, #2563eb, #1e40af)",
+            display: "flex",
+            alignItems: "center",
+            px: { xs: 2, md: 6 },
+            color: "white",
+          }}
+        >
+          <Box>
+            <Typography variant="h4" fontWeight={700}>
+              Big Deals Everyday
+            </Typography>
+            <Typography variant="body1" sx={{ opacity: 0.9 }}>
+              Discover trending products at best prices
+            </Typography>
+          </Box>
+        </Box>
+
+
+        {/* 🔹 HORIZONTAL CATEGORY STRIP  */}
+        <Box
+          sx={{
+            display: "flex",
+            gap: 1.5,
             overflowX: "auto",
-            gap: 1,
             py: 1,
-            px: 0.5,
+            mb: 3,
             scrollbarWidth: "none",
             "&::-webkit-scrollbar": { display: "none" },
           }}
@@ -123,7 +130,7 @@ function Home() {
           {categories.map((cat) => (
             <Chip
               key={cat}
-              label={cat.charAt(0).toUpperCase() + cat.slice(1)}
+              label={cat}
               clickable
               color={selectedCategory === cat ? "primary" : "default"}
               onClick={() => setSelectedCategory(cat)}
@@ -131,201 +138,135 @@ function Home() {
           ))}
         </Box>
 
-        {/* Desktop View */}
-        <Box
-          sx={{
-            display: "flex",
-            gap: 3,
-            alignItems: "flex-start",
-            flexDirection: { xs: "column", md: "row" },
-          }}
-        >
-          {/* LEFT: Sidebar area */}
-          <Box
-            sx={{
-              width: { xs: "100%", md: 260 },
-              flexShrink: 0,
-              position: { xs: "static", md: "sticky" },
-              top: { xs: "auto", md: "35px" },
-              alignSelf: "flex-start",
-              mb: { xs: 2, md: 0 },
-              display: { xs: "none", md: "block" },
-            }}
-          >
-            <CategorySidebar
-              categories={categories}
-              selectedCategory={selectedCategory}
-              onSelectCategory={setSelectedCategory}
-            />
-          </Box>
+        {/* 🔹 PRODUCT GRID  */}
+        <Grid container spacing={2}>
+          {filteredProducts.map((product) => {
+            const isInCart = cartItems.some((i) => i.id === product.id);
 
-          {/* RIGHT: Main content (search + products) */}
-          <Box sx={{ flex: 1 }}>
-            {/* Search */}
-            <Box sx={{ mb: 2, display: { xs: "none", md: "block" } }}>
-              <TextField
-                label="Search Products"
-                variant="outlined"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                fullWidth
-              />
-            </Box>
-
-            {/* Product Grid */}
-            <Grid container spacing={2}>
-              {filteredProducts.length > 0 ? (
-                filteredProducts.map((product) => (
-                  <Grid item xs={12} sm={6} md={4} key={product.id}>
-                    <Card
+            return (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+                <Card
+                  sx={{
+                    height: 360, // fixed total card height
+                    overflow: "hidden",
+                    width: 290,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    borderRadius: 2,
+                    "&:hover": { boxShadow: 6, transform: "translateY(-4px)" },
+                  }}
+                >
+                  {/* Image */}
+                  <Box
+                    sx={{
+                      height: 140,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#f5f5f5",
+                      overflow: "hidden",
+                      borderTopLeftRadius: 8,
+                      borderTopRightRadius: 8,
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      image={product.image}
+                      alt={product.title}
                       sx={{
-                        width: { md: 220, sm: "100%", xs: 380 },
-                        margin: "auto",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "space-between",
-                        boxShadow: 2,
-                        borderRadius: 2,
-                        transition: "transform 0.25s, box-shadow 0.25s",
-                        "&:hover": {
-                          transform: "translateY(-5px) scale(1.02)",
-                          boxShadow: 6,
-                        },
-                        minHeight: { md: 300, xs: 300 },
+                        width: 120,
+                        height: 120,
+                        objectFit: "contain",
+                      }}
+                    />
+                  </Box>
+
+                  {/* Content */}
+                  <CardContent
+                    sx={{
+                      flexGrow: 1,
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      p: 1,
+                    }}
+                  >
+                    <Typography
+                      variant="subtitle2"
+                      sx={{
+                        fontWeight: 600,
+                        height: 40,
+                        overflow: "hidden",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
                       }}
                     >
-                      {/* Image container */}
-                      <Box
-                        sx={{
-                          height: 220,
-                          width: 200,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          backgroundColor: "#fafafa",
-                          padding: 1,
-                          overflow: "hidden",
-                          margin: "0 auto",
-                        }}
-                      >
-                        <CardMedia
-                          component="img"
-                          image={product.image}
-                          alt={product.title}
-                          sx={{
-                            maxHeight: "100%",
-                            maxWidth: "100%",
-                            objectFit: "contain",
-                            transition: "transform 0.3s",
-                            margin: "0 auto",
-                            "&:hover": {
-                              transform: "scale(1.01)",
-                            },
-                          }}
-                        />
-                      </Box>
-                      {/* Card content */}
-                      <CardContent sx={{ p: 1, flexGrow: 1 }}>
-                        <Typography
-                          variant="subtitle2"
-                          sx={{
-                            fontSize: "0.85rem",
-                            fontWeight: 500,
-                            lineHeight: "1.2em",
-                            height: 32,
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            mb: 0.5,
-                          }}
-                        >
-                          {product.title}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          sx={{ mb: 0.5, fontWeight: "bold" }}
-                        >
-                          ${product.price}
-                        </Typography>
-                      </CardContent>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          padding: 1,
-                          pt: 0,
-                        }}
-                      >
-                        <Button
-                          component={Link}
-                          to={`/product/${product.id}`}
-                          variant="outlined"
-                          sx={{ mt: 1, ml: 1 }}
-                        >
-                          View
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color={added[product.id] ? "success" : "primary"}
-                          sx={{ mt: 1, ml: 1 }}
-                          onClick={() => handleAddToCart(product)}
-                          disabled={added[product.id]}
-                        >
-                          {added[product.id] ? (
-                            <>
-                              <CheckCircleIcon /> Added
-                            </>
-                          ) : (
-                            <>
-                              <ShoppingCartIcon /> Add
-                            </>
-                          )}
-                        </Button>
-                      </Box>
-                    </Card>
-                  </Grid>
-                ))
-              ) : (
-                <Grid item xs={12}>
-                  <Typography variant="h6" sx={{ mt: 2, textAlign: "center" }}>
-                    No products found.
-                  </Typography>
-                </Grid>
-              )}
-            </Grid>
-          </Box>
-        </Box>
-      </Box>
-      {/* Floating Cart Button - only on mobile */}
-      <Box
-        sx={{
-          position: "fixed",
-          bottom: 20,
-          right: 20,
-          zIndex: 1200,
-          display: { xs: "flex", md: "none" },
-        }}
-      >
-        <Badge
-          badgeContent={cartItems?.length || 0}
-          color="error"
-          overlap="circular"
+                      {product.title}
+                    </Typography>
+
+                    <Typography
+                      variant="h6"
+                      color="primary"
+                      sx={{ fontWeight: 700, mt: 1 }}
+                    >
+                      ${product.price}
+                    </Typography>
+                  </CardContent>
+
+                  {/* Buttons fixed at bottom */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      px: 2,
+                      pb: 2,
+                    }}
+                  >
+                    <Button
+                      component={Link}
+                      to={`/product/${product.id}`}
+                      size="small"
+                      variant="outlined"
+                    >
+                      View
+                    </Button>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      color={
+                        added[product.id] || isInCart ? "success" : "primary"
+                      }
+                      disabled={isInCart || added[product.id]}
+                      onClick={() => handleAddToCart(product)}
+                    >
+                      {isInCart || added[product.id] ? "In Cart" : "Add"}
+                    </Button>
+                  </Box>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
+
+        {/* 🔹 FLOATING CART BUTTON (Mobile) */}
+        <Box
+          sx={{
+            position: "fixed",
+            bottom: 20,
+            right: 20,
+            zIndex: 1200,
+            display: { xs: "flex", md: "none" },
+          }}
         >
-          <Fab
-            color="primary"
-            component={Link}
-            to="/card"
-            sx={{
-              boxShadow: 4,
-              "&:hover": { boxShadow: 8 },
-            }}
-          >
-            <ShoppingCartIcon />
-          </Fab>
-        </Badge>
-      </Box>
-    </Container>
+          <Badge badgeContent={cartItems.length} color="error">
+            <Fab color="primary" component={Link} to="/cart">
+              <ShoppingCartIcon />
+            </Fab>
+          </Badge>
+        </Box>
+      </Container>
+    </>
   );
 }
-
-export default Home;

@@ -10,14 +10,22 @@ import {
   ListItem,
   ListItemText,
   Box,
+  Badge,
+  TextField,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Link } from "react-router-dom";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useSearch } from "../context/SearchContext";
+import { useSelector } from "react-redux";
 
 function Navbar() {
   const { user, logout } = useAuth();
+  const cartItems = useSelector((state) => state.cart);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const navigate = useNavigate();
+  const { search, setSearch } = useSearch();
 
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);
@@ -26,7 +34,7 @@ function Navbar() {
   const menuItems = [
     { text: "Home", path: "/" },
     { text: "Shop", path: "/shop" },
-    { text: "Card", path: "/card" },
+    { text: "Cart", path: "/cart" },
     ...(user
       ? [{ text: "Logout", action: logout }]
       : [
@@ -37,65 +45,78 @@ function Navbar() {
 
   return (
     <>
-      <AppBar
-        position="static"
-        color="default"
-        sx={{ width: "100%", top: "53px" ,direction: "flex" ,alignItems:"flex-start" ,justifyContent:"space-between"}}
-      >
-        <Toolbar>
-          {/* Hamburger menu for mobile */}
+      {/* 🔹 MAIN NAVBAR */}
+      <AppBar position="sticky" color="default" elevation={1}>
+        <Toolbar sx={{ gap: 2 }}>
+          {/* Hamburger (mobile) */}
           <IconButton
             edge="start"
             color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2, display: { xs: "flex", md: "none" } }}
+            sx={{ display: { xs: "flex", md: "none" } }}
             onClick={toggleDrawer(true)}
           >
             <MenuIcon />
           </IconButton>
 
-          {/* Brand */}
-          <Button
+          {/* 🔹 LOGO */}
+          <Typography
             component={Link}
             to="/"
             sx={{
-              color: "black",
-              fontWeight: "bold",
-              fontSize: "24px",
-              flexGrow: 1,
-              
+              textDecoration: "none",
+              fontWeight: 800,
+              fontSize: "1.5rem",
+              color: "#2563eb",
+              mr: 2,
             }}
           >
-            K l e v r
-          </Button>
+            Klevr
+          </Typography>
 
-          {/* Desktop menu */}
+          {/* 🔹 SEARCH BAR (desktop only) */}
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "block" } }}>
+            <TextField
+              fullWidth
+              size="small"
+              placeholder="Search products..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </Box>
+
+          {/* 🔹 DESKTOP MENU */}
           <Box
             sx={{ display: { xs: "none", md: "flex" }, alignItems: "center" }}
           >
-            <Button component={Link} to="/" sx={{ color: "black" }}>
+            <Button component={Link} to="/" color="inherit">
               Home
             </Button>
-            <Button color="inherit" component={Link} to="/shop">
+            <Button component={Link} to="/shop" color="inherit">
               Shop
             </Button>
-            <Button color="inherit" component={Link} to="/card">
-              Card
-            </Button>
+
+            {/* Cart Icon */}
+            <IconButton component={Link} to="/cart" color="inherit">
+              <Badge badgeContent={cartItems.length} color="error">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
 
             {user ? (
               <>
-                <Typography sx={{ mx: 2 }}>{user.email}</Typography>
+                <Typography sx={{ mx: 2, fontSize: "0.9rem" }}>
+                  {user.email}
+                </Typography>
                 <Button color="inherit" onClick={logout}>
                   Logout
                 </Button>
               </>
             ) : (
               <>
-                <Button color="inherit" component={Link} to="/login">
+                <Button component={Link} to="/login" color="inherit">
                   Login
                 </Button>
-                <Button color="inherit" component={Link} to="/signup">
+                <Button component={Link} to="/signup" color="inherit">
                   Signup
                 </Button>
               </>
@@ -104,13 +125,12 @@ function Navbar() {
         </Toolbar>
       </AppBar>
 
-      {/* Drawer for mobile */}
+      {/* 🔹 MOBILE DRAWER */}
       <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
         <Box
           sx={{ width: 250 }}
           role="presentation"
           onClick={toggleDrawer(false)}
-          onKeyDown={toggleDrawer(false)}
         >
           <List>
             {menuItems.map((item, index) => (
