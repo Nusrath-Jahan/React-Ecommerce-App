@@ -34,7 +34,7 @@ function Navbar() {
   const menuItems = [
     { text: "Home", path: "/" },
     { text: "Shop", path: "/shop" },
-    { text: "Cart", path: "/cart" },
+    { text: "Card", path: "/card" },
     ...(user
       ? [{ text: "Logout", action: logout }]
       : [
@@ -96,7 +96,7 @@ function Navbar() {
             </Button>
 
             {/* Cart Icon */}
-            <IconButton component={Link} to="/cart" color="inherit">
+            <IconButton component={Link} to="/card" color="inherit">
               <Badge badgeContent={cartItems.length} color="error">
                 <ShoppingCartIcon />
               </Badge>

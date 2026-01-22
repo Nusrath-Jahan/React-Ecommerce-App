@@ -261,7 +261,7 @@ export default function Home() {
           }}
         >
           <Badge badgeContent={cartItems.length} color="error">
-            <Fab color="primary" component={Link} to="/cart">
+            <Fab color="primary" component={Link} to="/card">
               <ShoppingCartIcon />
             </Fab>
           </Badge>
