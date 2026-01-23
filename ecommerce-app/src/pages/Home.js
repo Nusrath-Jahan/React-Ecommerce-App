@@ -8,7 +8,6 @@ import {
   Typography,
   Button,
   Box,
-  TextField,
   CircularProgress,
   Container,
   Chip,
@@ -19,7 +18,6 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SliderBanner from "../components/SliderBanner";
 import { useSearch } from "../context/SearchContext";
 

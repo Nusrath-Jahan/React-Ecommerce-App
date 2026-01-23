@@ -1,70 +1,291 @@
-# Getting Started with Create React App
+# 🛒 E‑Commerce Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, responsive e‑commerce web application built with **React**, **Material UI**, and **Redux**, featuring authentication, product browsing, shopping cart, and checkout flow. This project demonstrates a full frontend shopping experience integrated with a public product API and Firebase authentication.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 📌 Overview
 
-### `npm start`
+This application provides a complete online shopping interface where users can:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+* Browse products by category
+* Search for products
+* View product details
+* Add / remove items from cart
+* Manage quantities
+* Authenticate using email & password
+* Proceed to checkout
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The app is fully responsive and optimized for both desktop and mobile devices.
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## ✨ Main Features
 
-### `npm run build`
+### 🛍 Product Browsing
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* Fetches products dynamically from a public API
+* Category‑based filtering
+* Search bar with live filtering
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 🛒 Shopping Cart
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* Add products to cart
+* Increase / decrease quantity
+* Remove items
+* Sticky checkout summary
+* Cart badge with item count
 
-### `npm run eject`
+### 🔐 Authentication
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+* User signup & login using Firebase Authentication
+* Protected routes for checkout
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 💳 Checkout
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+* Integrated Stripe payment flow (test environment)
+* Order summary before payment
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 📱 Responsive Design
 
-## Learn More
+* Optimized layouts for desktop, tablet, and mobile
+* Mobile drawer menu
+* Floating cart button on small screens
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🧰 Technologies Used
 
-### Code Splitting
+### Frontend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+* **React** – UI framework
+* **React Router DOM** – Routing
+* **Redux Toolkit** – Global state management
+* **Material UI (MUI)** – UI components & styling
 
-### Analyzing the Bundle Size
+### Backend / Services
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+* **Firebase Authentication** – User auth
+* **Stripe** – Payment processing (test mode)
+* **FakeStore API** – Product data source
 
-### Making a Progressive Web App
+### Tooling & Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+* **Axios** – API requests
+* **Netlify** – Hosting & deployment
+* **Create React App** – Project setup
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## ⚙️ Project Setup (Local Development)
 
-### Deployment
+### 1️⃣ Clone the Repository
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```bash
+git clone https://github.com/your-username/ecommerce-app.git
+cd ecommerce-app
+```
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### 2️⃣ Install Dependencies
+
+```bash
+npm install
+```
+
+---
+
+### 3️⃣ Configure Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+REACT_APP_FIREBASE_API_KEY=your_api_key
+REACT_APP_FIREBASE_AUTH_DOMAIN=your_auth_domain
+REACT_APP_FIREBASE_PROJECT_ID=your_project_id
+REACT_APP_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+REACT_APP_FIREBASE_APP_ID=your_app_id
+REACT_APP_FIREBASE_MEASUREMENT_ID=your_measurement_id
+```
+
+> ⚠️ These values come from your Firebase project settings.
+
+---
+
+### 4️⃣ Run the App Locally
+
+```bash
+npm start
+```
+
+App will be available at:
+
+```
+http://localhost:3000
+```
+
+---
+
+## 🚀 Using the Application
+
+### 🔎 Browsing Products
+
+* Navigate to **Home** or **Shop**
+* Filter by categories using chips or sidebar
+* Use the search bar to find products
+
+---
+
+### 🛒 Adding Items to Cart
+
+1. Click **Add** on a product card
+2. Cart icon updates with item count
+3. Go to **Cart** page from navbar
+
+In Cart:
+
+* Adjust quantity with + / - buttons
+* Remove items
+* View total price
+
+---
+
+### 🔐 Authentication
+
+* Go to **Signup** to create an account
+* Login using registered email & password
+* Logged‑in users can proceed to checkout
+
+---
+
+### 💳 Checkout Process
+
+1. From Cart, click **Checkout**
+2. Review order summary
+3. Complete payment via Stripe (test card)
+
+> 💡 Use Stripe test cards for development
+
+---
+
+## 🔌 APIs & Data Sources
+
+### Product API
+
+**FakeStore API**
+
+```
+https://fakestoreapi.com/products
+```
+
+Used for:
+
+* Product list
+* Categories
+* Product details
+
+---
+
+### Authentication
+
+**Firebase Authentication**
+
+* Email & password login
+* Session persistence
+
+---
+
+### Payments
+
+**Stripe API (Test Mode)**
+
+* Secure checkout simulation
+* Payment intent flow
+
+---
+
+## 🧪 Troubleshooting
+
+### Build Fails on Netlify
+
+If you see:
+
+```
+Treating warnings as errors because CI=true
+```
+
+Fix by:
+
+* Removing unused imports
+* Or add in Netlify environment variables:
+
+```
+CI = false
+```
+
+---
+
+### Cart Not Opening
+
+Ensure in `App.js`:
+
+```jsx
+<Route path="/cart" element={<Cart />} />
+```
+
+Navbar must link to `/cart`, not `/card`.
+
+---
+
+### Images Not Showing
+
+* Check API response
+* Ensure `objectFit: "contain"`
+* Verify HTTPS image URLs
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repository
+2. Create a new branch
+3. Make your changes
+4. Submit a pull request
+
+Please:
+
+* Follow consistent coding style
+* Test before submitting
+* Add clear commit messages
+
+---
+
+## 📄 License
+
+This project is open‑source and available under the **MIT License**.
+
+---
+
+## 🙌 Acknowledgements
+
+* FakeStore API for product data
+* Firebase for authentication
+* Stripe for payment simulation
+* Material UI for UI components
+
+---
+
+## 📬 Contact
+
+For questions or suggestions:
+
+* GitHub Issues
+* Email: [nusrathjahan0204@gmail.com](mailto:nusrathjahan0204@gmail.com)
+
+---
+
+✨ Happy Coding & Shopping! ✨
